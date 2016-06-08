@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Plugin name -->
+  <!--<string id="30000">Moja webTV</string>-->
+  <!-- List item titles and dialog progress strings -->
+  <string id="30100">TV kanali</string>
+  <string id="30101">Live Kamere</string>
+  <string id="30102">Radio</string>
+  <string id="30103">Snimci emisija</string>
+
+
+  <string id="32001">Moja webTV postavke</string>
+  <string id="32011">Korisničko ime/email</string>
+  <string id="32012">Lozinka</string>
+  <string id="32013">SD HQ Streamovi</string>
+</strings>
