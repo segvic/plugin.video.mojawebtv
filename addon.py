@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from xbmcswift import Plugin, download_page, xbmc, xbmcgui
 from BeautifulSoup import BeautifulSoup as BS
-#from urllib import urlencode
 from urlparse import urljoin
 import re
 import xbmcplugin
@@ -31,7 +30,7 @@ except ImportError:
     import simplejson as json
 
 
-PLUGIN_NAME = 'MojawebTV'
+PLUGIN_NAME = 'Moja webTV'
 PLUGIN_ID = 'plugin.video.mojawebtv'
 
 
@@ -127,16 +126,25 @@ def show_homepage():
     usern =  xbmcplugin.getSetting(pluginhandle, 'username')
     passwd = xbmcplugin.getSetting(pluginhandle, 'password')
     auth.doAuth(usern, passwd)
+
+    skin_used = xbmc.getSkinDir()
+    if skin_used == 'skin.confluence':
+      xbmc.executebuiltin('Container.SetViewMode(500)') # "Thumbnail" view
+    elif skin_used == 'skin.aeon.nox':
+      xbmc.executebuiltin('Container.SetViewMode(512)') # "Info-wall" view.
+
     items = [
         # SD Live
-        {'label': plugin.get_string(30100),
+        {'label': plugin.get_string(30100), 'thumbnail': 'http://195.222.33.193/kodi/livetv.png',
          'url': plugin.url_for('show_live', label='sd')},
-        {'label': plugin.get_string(30101),
+        # Live cam
+        {'label': plugin.get_string(30101), 'thumbnail': 'http://195.222.33.193/kodi/cam.png',
          'url': plugin.url_for('show_live', label='cam')},
-        {'label': plugin.get_string(30102),
+         # Radio
+        {'label': plugin.get_string(30102), 'thumbnail': 'http://195.222.33.193/kodi/radio.png',
          'url': plugin.url_for('show_live', label='radio')},
         # Recordings
-        {'label': plugin.get_string(30103),
+        {'label': plugin.get_string(30103), 'thumbnail': 'http://195.222.33.193/kodi/rec.png',
          'url': plugin.url_for('show_live', label='rec')},
 
     ]
@@ -166,7 +174,6 @@ def show_live(label):
     ext[1] = '.smil'
     ext[2] = '.smil'
     ext[3] = '.stream'
-
 
 
    # if xbmcplugin.getSetting(pluginhandle, 'hq') == "true":
@@ -235,12 +242,11 @@ def show_live(label):
 @plugin.route('/live/<url>/<title>/<thumb>')
 def play_live(url, title, thumb):
 
-    rtmpurl = url
-    epgtitle = title
-    li = xbmcgui.ListItem(label=epgtitle, thumbnailImage=thumb)
-    li.setInfo(type='Video', infoLabels={ "Title": epgtitle })
+
+    li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
+    li.setInfo(type='Video', infoLabels={ "Title": title })
     li.setProperty('IsPlayable', 'true')
-    xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER).play(rtmpurl, li)
+    xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
     # Return an empty list so we can test with plugin.crawl() and
     # plugin.interactive()
     return []
