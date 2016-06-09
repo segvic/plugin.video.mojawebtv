@@ -16,16 +16,16 @@ def doAuth(username, password):
             "p"   : password,
             "x" : "1"
           }
-          url = 'https://www.bhtelecom.ba/index.php?id=5363&'+ urllib.urlencode(dict_name_value_pairs)
+          url = 'https://www.bhtelecom.ba/index.php?id=6905&'+ urllib.urlencode(dict_name_value_pairs)
           src = download_page(url)
           resp = json.loads(src)
           auth  = resp['auth']
           #xbmc.log(resp)
           #xbmcgui.Dialog().ok("dooing","auth "+str(pluginhandle))
-          if auth == 0:
-            xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n Nakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
+          if auth < 100:
+            xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n\nNakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
             xbmcaddon.Addon(id='plugin.video.mojawebtv').openSettings()
         except:
-           xbmcgui.Dialog().ok("Autorizacija nije uspješna","Autorizacija nije moguća\nProvjerite da li ste spojeni na Internet pa pokušajte ponovo ")
+           xbmcgui.Dialog().ok("Autorizacija nije uspješna","Autorizacija nije moguća\n\nProvjerite da li ste spojeni na Internet pa pokušajte ponovo ")
 
 
