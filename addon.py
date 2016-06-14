@@ -38,20 +38,9 @@ PLUGIN_ID = 'plugin.video.mojawebtv'
 
 
 pluginhandle = int(sys.argv[1])
-
 plugin = Plugin(PLUGIN_NAME, PLUGIN_ID, __file__)
-
-
-
-BASE_URL = 'http://www.bhtelecom.ba/'
-def full_url(path):
-    return urljoin(BASE_URL, path)
-
-
-YOUTUBE_PTN = 'plugin://plugin.video.youtube/?action=play_video&videoid=%s'
-def youtube_url(videoid):
-    return YOUTUBE_PTN % (videoid)
-
+usern =  xbmcplugin.getSetting(pluginhandle, 'username')
+passwd = xbmcplugin.getSetting(pluginhandle, 'password')
 
 def parse_video(video):
     '''Returns a dict of information for a given json video object.'''
@@ -123,9 +112,7 @@ def get_recordings(id):
 
 @plugin.route('/', default=True)
 def show_homepage():
-    usern =  xbmcplugin.getSetting(pluginhandle, 'username')
-    passwd = xbmcplugin.getSetting(pluginhandle, 'password')
-    auth.doAuth(usern, passwd)
+
 
     skin_used = xbmc.getSkinDir()
     if skin_used == 'skin.confluence':
@@ -133,7 +120,9 @@ def show_homepage():
     elif skin_used == 'skin.aeon.nox':
       xbmc.executebuiltin('Container.SetViewMode(512)') # "Info-wall" view.
 
-    items = [
+
+    if usern!='':
+      items = [
         # SD Live
         {'label': plugin.get_string(30100), 'thumbnail': 'http://195.222.33.193/kodi/livetv.png',
          'url': plugin.url_for('show_live', label='sd')},
@@ -147,7 +136,19 @@ def show_homepage():
         {'label': plugin.get_string(30103), 'thumbnail': 'http://195.222.33.193/kodi/rec.png',
          'url': plugin.url_for('show_live', label='rec')},
 
-    ]
+      ]
+
+    if usern=='':
+      items = [
+        # Live cam
+        {'label': plugin.get_string(30101), 'thumbnail': 'http://195.222.33.193/kodi/cam.png',
+         'url': plugin.url_for('show_live', label='cam')},
+         # Radio
+        {'label': plugin.get_string(30102), 'thumbnail': 'http://195.222.33.193/kodi/radio.png',
+         'url': plugin.url_for('show_live', label='radio')},
+
+      ]
+
     return plugin.add_items(items)
 
 
@@ -157,9 +158,7 @@ def show_live(label):
     '''
     '''
     items = []
-    usern =  xbmcplugin.getSetting(pluginhandle, 'username')
-    passwd = xbmcplugin.getSetting(pluginhandle, 'password')
-    auth.doAuth(usern, passwd)
+
 
 
     url_add = ''
@@ -181,9 +180,15 @@ def show_live(label):
     # The first link for the 'Clips' section links directly to a video so we
     # must handle it differently.
     if label=='sd':
-      videos, total_results = get_videos('sd')
-      i = 0;
-      for video in videos:
+
+      auth_resp = auth.doAuth(usern, passwd)
+      if auth_resp < 100:
+          xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n\nNakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
+          xbmcaddon.Addon(id='plugin.video.mojawebtv').openSettings()
+      if auth_resp > 99:
+        videos, total_results = get_videos('sd')
+        i = 0;
+        for video in videos:
 
           items.append({
             'label': video['summary'],
@@ -224,8 +229,13 @@ def show_live(label):
           })
 
     if label=='rec':
-      videos, total_results = get_videos('rec')
-      for video in videos:
+      auth_resp = auth.doAuth(usern, passwd)
+      if auth_resp < 100:
+          xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n\nNakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
+          xbmcaddon.Addon(id='plugin.video.mojawebtv').openSettings()
+      if auth_resp > 99:
+        videos, total_results = get_videos('rec')
+        for video in videos:
           items.append({
             'label': video['summary'],
             'thumbnail': video['logo'],
@@ -243,13 +253,25 @@ def show_live(label):
 def play_live(url, title, thumb):
 
 
-    li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
-    li.setInfo(type='Video', infoLabels={ "Title": title })
-    li.setProperty('IsPlayable', 'true')
-    xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
-    # Return an empty list so we can test with plugin.crawl() and
-    # plugin.interactive()
-    return []
+    if usern!='':
+      auth_resp = auth.doAuth(usern, passwd)
+      if auth_resp < 100:
+        xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n\nNakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
+        xbmcaddon.Addon(id='plugin.video.mojawebtv').openSettings()
+      if auth_resp > 99:
+        li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
+        li.setInfo(type='Video', infoLabels={ "Title": title })
+        li.setProperty('IsPlayable', 'true')
+        xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+
+    if usern=='':
+      li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
+      li.setInfo(type='Video', infoLabels={ "Title": title })
+      li.setProperty('IsPlayable', 'true')
+      xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+      # Return an empty list so we can test with plugin.crawl() and
+      # plugin.interactive()
+      return []
 
 
 @plugin.route('/epg/<ch>/')

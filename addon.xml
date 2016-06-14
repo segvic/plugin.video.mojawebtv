@@ -1,4 +1,4 @@
-﻿<addon id="plugin.video.mojawebtv" name="Moja webTV" provider-name="Srđan Šegvić" version="1.0.1">
+﻿<addon id="plugin.video.mojawebtv" name="Moja webTV" provider-name="Srđan Šegvić" version="1.0.2">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.beautifulsoup" version="3.2.0" />
@@ -13,8 +13,8 @@
   <extension point="xbmc.addon.metadata">
     <language>en</language>
     <platform>all</platform>
-    <summary lang="en">Officijelna Moja webTV aplikacija za Kodi</summary>
-    <description lang="en">Officijelna Moja webTV aplikacija - omogućava gledanja živih kanala i snimaka emisija popularnih TV kanala. Za korištenje je neophodno korisničko ime i lozinka.
+    <summary lang="en">Moja webTV</summary>
+    <description lang="en">Watch Live Cams and listen to Radios stations from Bosnia. Gledajte Live kamere i slušajte radio stanice iz BiH. Za registrovane korisnike unosom korisničkih podataka kroz postavke omogućeno je korištenje svih opcija servisa
     </description>
   </extension>
 </addon>
