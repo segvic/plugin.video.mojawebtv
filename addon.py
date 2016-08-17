@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
+# Update for MojaTV sport
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -194,7 +194,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['thumbnail'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo']),
+            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -209,7 +209,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['thumbnail'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo']),
+            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -223,7 +223,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['logo'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo']),
+            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -249,9 +249,8 @@ def show_live(label):
     return plugin.add_items(items)
 
 
-@plugin.route('/live/<url>/<title>/<thumb>')
-def play_live(url, title, thumb):
-
+@plugin.route('/live/<url>/<title>/<thumb>/<chid>/<usern>/<passwd>/')
+def play_live(url, title, thumb, chid, usern, passwd):
 
     if usern!='':
       auth_resp = auth.doAuth(usern, passwd)
@@ -259,10 +258,15 @@ def play_live(url, title, thumb):
         xbmcgui.Dialog().ok("Autorizacija nije uspješna","Niste unijeli korisničke podatke ili uneseni podaci nisu tačni.\n\nNakon što kliknete OK otvoriće Vam se postavke te je neophodno da unesete ispravno korisničko ime i lozinku za Moja webTV servis ")
         xbmcaddon.Addon(id='plugin.video.mojawebtv').openSettings()
       if auth_resp > 99:
+
         li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
         li.setInfo(type='Video', infoLabels={ "Title": title })
         li.setProperty('IsPlayable', 'true')
-        xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+        if chid == 'bhtpremier':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://195.222.59.146/hls/bhtpremier_1200.m3u8', li)
+        else:
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+
 
     if usern=='':
       li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
