@@ -209,7 +209,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['thumbnail'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+            'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'_1200.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -223,7 +223,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['logo'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+            'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -263,7 +263,17 @@ def play_live(url, title, thumb, chid, usern, passwd):
         li.setInfo(type='Video', infoLabels={ "Title": title })
         li.setProperty('IsPlayable', 'true')
         if chid == 'bhtpremier':
-          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://195.222.59.146/hls/bhtpremier_1200.m3u8', li)
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/bhtpremier_1200.m3u8', li)
+        elif chid == 'arena1':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/arena1_1200.m3u8', li)
+        elif chid == 'arena2':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/arena2_1200.m3u8', li)
+        elif chid == 'arena3':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/arena3_1200.m3u8', li)
+        elif chid == 'arena4':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/arena4_1200.m3u8', li)
+        elif chid == 'arenahr':
+          xbmc.Player(xbmc.PLAYER_CORE_AUTO).play('http://webtvstream.bhtelecom.ba/hls/arenahr_1200.m3u8', li)
         else:
           xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
 
