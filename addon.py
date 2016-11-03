@@ -189,16 +189,24 @@ def show_live(label):
         videos, total_results = get_videos('sd')
         i = 0;
         for video in videos:
-
-          items.append({
-            'label': video['summary'],
-            'info': {'plot': video['start']+' '+video['title'], },
-            'thumbnail': video['thumbnail'],
-            'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
-            'is_folder': False,
-            'is_playable': False,
-          })
-
+          if video['cluster']==2 or video['cluster']==3:
+            items.append({
+              'label': video['summary'],
+              'info': {'plot': video['start']+' '+video['title'], },
+              'thumbnail': video['thumbnail'],
+              'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'_1200.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+              'is_folder': False,
+              'is_playable': False,
+            })
+          else:
+            items.append({
+              'label': video['summary'],
+              'info': {'plot': video['start']+' '+video['title'], },
+              'thumbnail': video['thumbnail'],
+              'url': plugin.url_for('play_live', url='http://'+server[video['cluster']]+':1935/live/'+video['videoid']+''+ext[video['cluster']]+'/playlist.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+              'is_folder': False,
+              'is_playable': False,
+            })
 
     if label=='cam':
       videos, total_results = get_videos('cam')
