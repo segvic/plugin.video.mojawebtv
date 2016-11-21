@@ -193,7 +193,7 @@ def show_live(label):
              'label': video['summary'],
              'info': {'plot': video['start']+' '+video['title'], },
              'thumbnail': video['thumbnail'],
-             'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'_1200.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+             'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/kodi/'+video['videoid']+'.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
              'is_folder': False,
              'is_playable': False,
           })
@@ -207,7 +207,7 @@ def show_live(label):
             'label': video['summary'],
             'info': {'plot': video['start']+' '+video['title'], },
             'thumbnail': video['thumbnail'],
-            'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'_1200.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+            'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/kodi/'+video['videoid']+'.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
             'is_folder': False,
             'is_playable': False,
           })
@@ -220,7 +220,7 @@ def show_live(label):
            'label': video['summary'],
            'info': {'plot': video['start']+' '+video['title'], },
            'thumbnail': video['logo'],
-           'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/hls/'+video['videoid']+'.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
+           'url': plugin.url_for('play_live', url='http://webtvstream.bhtelecom.ba/kodi/'+video['videoid']+'.m3u8', title=(video['title'].encode('utf8')), thumb=video['logo'], chid=video['videoid'], usern=usern, passwd=passwd),
            'is_folder': False,
            'is_playable': False,
         })
@@ -285,7 +285,7 @@ def get_epg(ch):
           'label': video['title'],
           'thumbnail': 'http://195.222.33.193/hq_logo/'+ch+'.png',
           'info': {'plot': video['summary'], },
-          'url': 'http://195.222.59.138:1935/vod/mp4:'+tsname+'.mp4/playlist.m3u8',
+          'url': 'http://webtvstream.bhtelecom.ba/rec/'+tsname+'.mp4',
           'is_folder': False,
           'is_playable': True,
         })
