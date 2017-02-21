@@ -49,8 +49,8 @@ def parse_video(video):
         'summary': video['title'],
         'videoid': video['ch'],
         'start': video['epgstart'],
-        'thumbnail': 'http://195.222.33.193/thumbs/'+video['ch']+'.jpg?x='+datetime.now().strftime('%Y%m%d%H%M%S'),
-        'logo': 'http://195.222.33.193/hq_logo/'+video['ch']+'.png',
+        'thumbnail': 'http://webtv.bhtelecom.ba/thumbs/'+video['ch']+'.jpg?x='+datetime.now().strftime('%Y%m%d%H%M%S'),
+        'logo': 'http://webtv.bhtelecom.ba/hq_logo/'+video['ch']+'.png',
         'cluster': int(video['cluster'])
     }
     return info
@@ -78,13 +78,13 @@ def get_videos(list_id):
     of videos available for the given list_id. The number of videos returned
     is specified by the given count.'''
     if list_id == 'sd':
-      url  = 'http://195.222.33.193/channels'
+      url  = 'http://webtv.bhtelecom.ba/channels'
     if list_id == 'cam':
-      url  = 'http://195.222.33.193/channels_cat_4'
+      url  = 'http://webtv.bhtelecom.ba/channels_cat_4'
     if list_id == 'radio':
-      url  = 'http://195.222.33.193/channels_cat_11'
+      url  = 'http://webtv.bhtelecom.ba/channels_cat_11'
     if list_id == 'rec':
-      url = 'http://195.222.33.193/channels_rec'
+      url = 'http://webtv.bhtelecom.ba/channels_rec'
 
     src = download_page(url)
     resp = json.loads(src)
@@ -98,7 +98,7 @@ def get_videos(list_id):
 def get_recordings(id):
 
 
-    url  = 'http://195.222.33.193/epg/'+id
+    url  = 'http://webtv.bhtelecom.ba/epg/'+id
     #xbmcgui.Dialog().ok("EPG URL", url)
     src = download_page(url)
     resp = json.loads(src)
@@ -124,16 +124,16 @@ def show_homepage():
     if usern!='':
       items = [
         # SD Live
-        {'label': plugin.get_string(30100), 'thumbnail': 'http://195.222.33.193/kodi/livetv.png',
+        {'label': plugin.get_string(30100), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/livetv.png',
          'url': plugin.url_for('show_live', label='sd')},
         # Live cam
-        {'label': plugin.get_string(30101), 'thumbnail': 'http://195.222.33.193/kodi/cam.png',
+        {'label': plugin.get_string(30101), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/cam.png',
          'url': plugin.url_for('show_live', label='cam')},
          # Radio
-        {'label': plugin.get_string(30102), 'thumbnail': 'http://195.222.33.193/kodi/radio.png',
+        {'label': plugin.get_string(30102), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/radio.png',
          'url': plugin.url_for('show_live', label='radio')},
         # Recordings
-        {'label': plugin.get_string(30103), 'thumbnail': 'http://195.222.33.193/kodi/rec.png',
+        {'label': plugin.get_string(30103), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/rec.png',
          'url': plugin.url_for('show_live', label='rec')},
 
       ]
@@ -141,10 +141,10 @@ def show_homepage():
     if usern=='':
       items = [
         # Live cam
-        {'label': plugin.get_string(30101), 'thumbnail': 'http://195.222.33.193/kodi/cam.png',
+        {'label': plugin.get_string(30101), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/cam.png',
          'url': plugin.url_for('show_live', label='cam')},
          # Radio
-        {'label': plugin.get_string(30102), 'thumbnail': 'http://195.222.33.193/kodi/radio.png',
+        {'label': plugin.get_string(30102), 'thumbnail': 'http://webtv.bhtelecom.ba/kodi/radio.png',
          'url': plugin.url_for('show_live', label='radio')},
 
       ]
@@ -258,14 +258,14 @@ def play_live(url, title, thumb, chid, usern, passwd):
         li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
         li.setInfo(type='Video', infoLabels={ "Title": title })
         li.setProperty('IsPlayable', 'true')
-        xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+        xbmc.Player().play(url, li)
 
 
     if usern=='':
       li = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
       li.setInfo(type='Video', infoLabels={ "Title": title })
       li.setProperty('IsPlayable', 'true')
-      xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, li)
+      xbmc.Player().play(url, li)
       # Return an empty list so we can test with plugin.crawl() and
       # plugin.interactive()
       return []
@@ -283,7 +283,7 @@ def get_epg(ch):
         tsname = video['ts']
         items.append({
           'label': video['title'],
-          'thumbnail': 'http://195.222.33.193/hq_logo/'+ch+'.png',
+          'thumbnail': 'http://webtv.bhtelecom.ba/hq_logo/'+ch+'.png',
           'info': {'plot': video['summary'], },
           'url': 'http://webtvstream.bhtelecom.ba/rec/'+tsname+'.mp4',
           'is_folder': False,
